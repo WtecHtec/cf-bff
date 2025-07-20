@@ -4,7 +4,7 @@
  */
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "spec-code-worker",
+	"name": "cf-bff",
 	"main": "src/index.js",
 	"compatibility_date": "2024-11-11",
 	"compatibility_flags": [
