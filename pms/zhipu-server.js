@@ -59,6 +59,17 @@ app.post('/chat', async (req, res) => {
 		const response = await axios.post('https://open.bigmodel.cn/api/paas/v4/chat/completions', {
 			model: ZHIPU_MODEL,
 			messages: [
+                {
+					role: 'system',
+					content: `
+                    ** 任务 **
+                    将用户提供的内容转换成markdown格式,
+                    ** 限制 **
+                    1.不过过多解释
+                    2.不要回复跟任务之外的任何内容。
+                    ** 输出**
+                    输出最终的markdown格式内容`
+				},
 				{
 					role: 'user',
 					content: content
