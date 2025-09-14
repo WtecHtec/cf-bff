@@ -8,7 +8,7 @@
  * Learn more at https://developers.cloudflare.com/workers/
  */
 
-import { handleTranslate } from './router_tranlate';
+import  handleTranslate  from './router_tranlate';
 export default {
 	async fetch(request, env, ctx) {
 		const url = new URL(request.url);
@@ -94,7 +94,9 @@ async function handleChat(request, env) {
 			},
 			body: JSON.stringify({
 				model: model,
-				thinking: 'disabled',
+				thinking: {
+					type: 'disabled'
+				} ,
 				messages: [
 					{
 						role: 'user',

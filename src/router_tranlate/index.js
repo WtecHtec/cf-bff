@@ -30,6 +30,7 @@ async function handle(request, env) {
 			});
 		}
 
+
 		// 检查 API Key
 		const apiKey = env.ZHIPU_API_KEY;
 		const model = env.ZHIPU_MODEL;
@@ -54,7 +55,9 @@ async function handle(request, env) {
 			},
 			body: JSON.stringify({
 				model: model,
-				thinking: 'disabled',
+				thinking:  {
+					type: 'disabled'
+				} ,
 				messages: [
 					{
 						role: 'system',
