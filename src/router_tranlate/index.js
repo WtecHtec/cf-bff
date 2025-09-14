@@ -103,3 +103,5 @@ async function handle(request, env) {
 		});
 	}
 }
+
+export default handle;
