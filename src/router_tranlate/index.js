@@ -1,46 +1,6 @@
-/**
- * Welcome to Cloudflare Workers! This is your first worker.
- *
- * - Run `npm run dev` in your terminal to start a development server
- * - Open a browser tab at http://localhost:8787/ to see your worker in action
- * - Run `npm run deploy` to publish your worker
- *
- * Learn more at https://developers.cloudflare.com/workers/
- */
+import { systemPrompt } from "./prompt";
 
-import { handleTranslate } from './router_tranlate';
-export default {
-	async fetch(request, env, ctx) {
-		const url = new URL(request.url);
-		
-		// 处理 CORS 预检请求
-		if (request.method === 'OPTIONS') {
-			return new Response(null, {
-				status: 200,
-				headers: {
-					'Access-Control-Allow-Origin': '*',
-					'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-					'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-				},
-			});
-		}
-
-		switch (url.pathname) {
-			case '/message':
-				return new Response('Hello, World!');
-			case '/random':
-				return new Response(crypto.randomUUID());
-			case '/chat':
-				return await handleChat(request, env);
-			case '/translate':
-				return await handleTranslate(request, env);
-			default:
-				return new Response('Not Found', { status: 404 });
-		}
-	},
-};
-
-async function handleChat(request, env) {
+async function handle(request, env) {
 	try {
 		// 只接受 POST 请求
 		if (request.method !== 'POST') {
@@ -96,6 +56,10 @@ async function handleChat(request, env) {
 				model: model,
 				thinking: 'disabled',
 				messages: [
+					{
+						role: 'system',
+						content: systemPrompt
+					},
 					{
 						role: 'user',
 						content: content
