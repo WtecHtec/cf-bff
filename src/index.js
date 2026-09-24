@@ -10,6 +10,8 @@
 
 import handleTranslate from './router_tranlate';
 import handleSnapwrite from './snapwrite';
+import handleTypesafe from './typesafe';
+
 export default {
 	async fetch(request, env, ctx) {
 		const url = new URL(request.url);
@@ -37,6 +39,8 @@ export default {
 				return await handleTranslate(request, env);
 			case '/snapwrite':
 				return await handleSnapwrite(request, env);
+			case '/typesafe':
+				return await handleTypesafe(request, env);
 			default:
 				return new Response('Not Found', { status: 404 });
 		}

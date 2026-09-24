@@ -38,4 +38,34 @@ describe('Hello World user worker', () => {
 			expect(await response.text()).toMatch(/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}/);
 		});
 	});
+
+	describe('TypeSafe proxy route /typesafe', () => {
+		it('handles OPTIONS preflight with CORS headers', async () => {
+			const request = new Request('http://example.com/typesafe', { method: 'OPTIONS' });
+			const response = await SELF.fetch(request);
+			expect([200, 204]).toContain(response.status);
+			expect(response.headers.get('Access-Control-Allow-Origin')).toBe('*');
+			expect(response.headers.get('Access-Control-Allow-Headers')).toContain('Authorization');
+		});
+
+		it('returns 405 for GET request', async () => {
+			const request = new Request('http://example.com/typesafe', { method: 'GET' });
+			const response = await SELF.fetch(request);
+			expect(response.status).toBe(405);
+			expect(response.headers.get('Access-Control-Allow-Origin')).toBe('*');
+		});
+
+		it('returns 401 when API Key is missing', async () => {
+			const request = new Request('http://example.com/typesafe', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ state: 'test' }),
+			});
+			const response = await SELF.fetch(request);
+			expect(response.status).toBe(401);
+			expect(response.headers.get('Access-Control-Allow-Origin')).toBe('*');
+			const json = await response.json();
+			expect(json.error).toMatch(/API Key/);
+		});
+	});
 });
